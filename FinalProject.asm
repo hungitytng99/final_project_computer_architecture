@@ -12,13 +12,8 @@ message1: .asciiz "Total time of typing (ms): "
 message2: .asciiz "The number of character you have typed:"
 message3: .asciiz "Typing speed (char/ms): "
 .text
-	#li $t5, 1 #condition to start time when press the first key
+	addi $t5,$t5,1 #condition to start time when press the first key
 	# Start timer, value in t8
-	li $v0, 30
-	syscall
-	addi $t8, $a0, 0
-	nop
-	li $t5, 0
 #Keyboard input
 	li $k0, KEY_CODE
 	li $k1, KEY_READY
@@ -68,9 +63,14 @@ WaitForKey:
 ReadKey:
 	lw $t0, 0($k0) 		# $t0 = $k0 = KEY_CODE
 	nop
-	#beqz $t5,WaitForDis
-	#nop
-	
+	beqz $t5,WaitForDis
+	li $v0, 30
+	syscall
+	addi $t8, $a0, 0
+	la $a1, input		# a1 = input[0]
+	la $a0, source 		# a0 = source[0]
+	li $t5, 0
+	nop
 WaitForDis:
 	lw $t2, 0($s4) 		# $t2 = $s4 = DISPLAY_READY
 	nop
