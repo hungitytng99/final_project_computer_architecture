@@ -1,0 +1,21 @@
+message3: .asciiz "Typing speed (char/ms): "
+# print typing speed to console
+	li $v0, 4			
+	la $a0, message3
+	syscall	
+	
+	li $v0, 2
+	
+	mtc1 $s5, $f2
+	cvt.s.w $f2, $f2
+	
+	sub $t7, $t9, $t8
+	mtc1 $t7, $f4
+	cvt.s.w $f4, $f4
+	
+	div.s $f12, $f2, $f4           		
+	syscall
+	
+
+ 	li $v0, 10 #terminate program
+	syscall
